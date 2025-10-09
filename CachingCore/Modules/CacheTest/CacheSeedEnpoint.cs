@@ -23,7 +23,7 @@ public class CacheSeedEnpoint(PostgresDatabase database) : EndpointWithoutReques
     public override async Task HandleAsync(CancellationToken ct)
     {
         var caches = new List<Cache>();
-        for (int i = 1; i <= 10000; i++)
+        for (int i = 1; i <= 10; i++)
         {
             caches.Add(new Cache
             {
@@ -34,6 +34,12 @@ public class CacheSeedEnpoint(PostgresDatabase database) : EndpointWithoutReques
 
         await database.Caches.AddRangeAsync(caches);
         await database.SaveChangesAsync();
+
+        foreach (var cache in caches)
+        {
+            Console.WriteLine($"ID: {cache.Id}, Narration: {cache.Description}, Date: {cache.CreatedOn}");
+        }
+        Console.WriteLine("Seeding Done");
         
         await Send.OkAsync(cancellation: ct);
     }
