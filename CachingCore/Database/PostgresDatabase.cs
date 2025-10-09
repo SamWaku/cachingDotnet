@@ -11,5 +11,17 @@ public class PostgresDatabase(DbContextOptions<PostgresDatabase> options) : DbCo
     {
         builder.HasDefaultSchema("public");
         base.OnModelCreating(builder);
+        var cacheSeed = new List<Cache>();
+        for (int i = 1; i <= 10000; i++)
+        {
+            cacheSeed.Add(new Cache
+            {
+                Id = i,
+                Description = $"Seeded cache entry #{i}",
+                CreatedOn = DateTimeOffset.UtcNow
+            });
+        }
+
+        builder.Entity<Cache>().HasData(cacheSeed);
     }
 }
