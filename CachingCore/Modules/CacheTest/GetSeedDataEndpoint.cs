@@ -1,6 +1,7 @@
 ﻿using CachingCore.Database;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CachingCore.Modules.CacheTest;
 
@@ -13,7 +14,7 @@ public class DefaultResponse<T> where T : class
 }
 
 
-public class GetSeedDataEndpoint(PostgresDatabase database) : EndpointWithoutRequest<DefaultResponse<Cache>>
+public class GetSeedDataEndpoint(PostgresDatabase database, IMemoryCache cache) : EndpointWithoutRequest<DefaultResponse<Cache>>
 {
     public override void Configure()
     {
@@ -30,8 +31,11 @@ public class GetSeedDataEndpoint(PostgresDatabase database) : EndpointWithoutReq
         var seeded_data = await database.Caches
             .AsNoTracking()
             .ToListAsync();
-        
-        
+
+        if (!cache.TryGetValue("seededData", out List<Cache> cachedData))
+        {
+            
+        }
         return new DefaultResponse<Cache>
         { 
             StatusCode = 200,

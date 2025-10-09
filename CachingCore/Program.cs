@@ -8,6 +8,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddFastEndpoints();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
+builder.Services.AddMemoryCache();
 builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddCors(options =>
 {
