@@ -28,24 +28,22 @@ public class GetSeedDataEndpoint(PostgresDatabase database, IMemoryCache cache) 
 
     public override async Task<DefaultResponse<Cache>> ExecuteAsync(CancellationToken ct)
     {
-        var seeded_data = await database.Caches
-            .AsNoTracking()
-            .ToListAsync();
+       
 
         if (!cache.TryGetValue("seededData", out List<Cache> cachedData))
         {
+            cachedData = await database.Caches.AsNoTracking().ToListAsync();
             
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromMinutes(5));
+            
+            cache.Set("seededData", cachedData, cacheEntryOptions);
         }
         return new DefaultResponse<Cache>
         { 
             StatusCode = 200,
             Message = "Success",
-            Data = seeded_data.Select(x => new Cache
-            {
-                Id = x.Id,
-                Description = x.Description,
-                CreatedOn = x.CreatedOn
-            }).ToList(),
+            Data = cachedData!,
             Errors = null
         };
     }
