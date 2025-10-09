@@ -14,7 +14,7 @@ public class DefaultResponse<T> where T : class
 }
 
 
-public class GetSeedDataEndpoint(PostgresDatabase database, IMemoryCache cache) : EndpointWithoutRequest<DefaultResponse<Cache>>
+public class GetSeedDataEndpointInMemory(PostgresDatabase database, IMemoryCache cache) : EndpointWithoutRequest<DefaultResponse<Cache>>
 {
     public override void Configure()
     {
