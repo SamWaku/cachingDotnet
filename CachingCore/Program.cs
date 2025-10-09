@@ -1,9 +1,11 @@
+using CachingCore.Common;
 using FastEndpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddFastEndpoints();
+builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("DefaultPolicy", policy =>

@@ -1,4 +1,9 @@
-﻿namespace CachingCore.Common;
+﻿using CachingCore.Database;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
+
+
+namespace CachingCore.Common;
 
 public static class DatabaseExtension
 {
