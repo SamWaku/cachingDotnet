@@ -1,4 +1,5 @@
-﻿using StackExchange.Redis;
+﻿using System.Text.Json;
+using StackExchange.Redis;
 
 namespace CachingCore.Common;
 
@@ -11,14 +12,18 @@ public class RedisCacheService
         db = redis.GetDatabase();
     }
 
-    public async Task SetAsync()
+    public async Task SetAsync<T>(String key, T value, TimeSpan? expiry = null)
     {
-        return ;
+        var json = JsonSerializer.Serialize(value);
+        await db.StringSetAsync(key, json, expiry);
     }
 
-    public async Task GetAsync()
+    public async Task<T?> GetAsync<T>(String key)
     {
-        
+        var value = await db.StringGetAsync(key);
+        if (value.IsNullOrEmpty)
+            return default;
+        return JsonSerializer.Deserialize<T>(value!);
     }
 
     public async Task RemoveAsync()
