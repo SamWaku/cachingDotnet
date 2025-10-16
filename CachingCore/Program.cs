@@ -1,6 +1,8 @@
 using CachingCore.Common;
 using FastEndpoints;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Scalar.AspNetCore;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,22 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+
+// builder.Services.AddStackExchangeRedisCache(options =>
+// {
+//     options.Configuration = builder.Configuration.GetValue<string>("RedisCacheUrl");
+// });
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(options =>
+{
+    var config = builder.Configuration.GetConnectionString("RedisCacheUrl");
+    if (!string.IsNullOrEmpty(config))
+        throw new Exception("Connection not found");
+    
+    return ConnectionMultiplexer.Connect(config!);
+});
+
+
 
 var app = builder.Build();
 app.UseCors("DefaultPolicy");
