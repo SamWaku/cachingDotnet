@@ -33,4 +33,9 @@ public static class PostgresEnumExtension
             builder.MapEnum(type, $"{schema}.{type.Name.Underscore()}");
         }
     }
+
+    public static void RedisConnection()
+    {
+        
+    }
 }

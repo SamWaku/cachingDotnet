@@ -10,6 +10,12 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
 builder.Services.AddMemoryCache();
 builder.Services.AddDbContext(builder.Configuration);
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "Caching";
+});
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("DefaultPolicy", policy =>
