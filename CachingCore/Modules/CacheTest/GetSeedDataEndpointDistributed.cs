@@ -2,6 +2,7 @@
 using CachingCore.Database;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace CachingCore.Modules.CacheTest;
 
@@ -24,28 +25,28 @@ public class GetSeedDataEndpointDistributed(RedisCacheService redis, PostgresDat
         if (cachedData == null)
             return new DefaultResponse<Cache>
             {
-                StatusCode = 0,
-                Message = null,
+                StatusCode = StatusCodes.Status200OK,
+                Message = "Fetched Data from Redis",
                 Data = new List<Cache>
                 {
                     cachedData!
                 },
                 Errors = null
             };
+
+        var dbData = database.Caches
+            .AsNoTracking()
+            .Take(1000)
+            .ToList();
         
+        await redis.SetAsync(key, cachedData!, TimeSpan.FromMinutes(5));
         
-        
-        return new DefaultResponse
-        {
-            StatusCode = 0,
-            Message = null,
-            Data = new List<Cache>
+            return new DefaultResponse<Cache>
             {
-                Id = 0,
-                Description = null,
-                CreatedOn = default
-            },
-            Errors = null
-        };
+                StatusCode = StatusCodes.Status200OK,
+                Message = "Fetched Data from Database",
+                Data = dbData!,
+                Errors = null
+            };
     }
 }
