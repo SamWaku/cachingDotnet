@@ -8,6 +8,7 @@ using ILogger = Serilog.ILogger;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 Log.Information("Application starting");
 builder.Services.AddOpenApi();
 builder.Services.AddFastEndpoints();
@@ -52,10 +53,10 @@ app.MapOpenApi();
 app.MapScalarApiReference();
 app.UseSerilogRequestLogging();
 
-//example api logging data
-// app.MapGet("/serilog-example", (ILogger logger) =>
-// {
-//     logger.Information("Hello World!");
-//     return Results.Ok();
-// });
+// example api logging data
+ app.MapGet("/serilog-example", (ILogger logger) =>
+ {
+     logger.Information("Hello World!");
+     return Results.Ok(new { message = "Logs created!" });
+ });
 app.Run();
