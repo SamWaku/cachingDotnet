@@ -13,11 +13,6 @@ builder.Services.AddAuthentication();
 builder.Services.AddMemoryCache();
 builder.Services.AddDbContext(builder.Configuration);
 
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("Redis");
-    options.InstanceName = "Caching";
-});
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("DefaultPolicy", policy =>
@@ -28,15 +23,10 @@ builder.Services.AddCors(options =>
     });
 });
 
-// builder.Services.AddStackExchangeRedisCache(options =>
-// {
-//     options.Configuration = builder.Configuration.GetValue<string>("RedisCacheUrl");
-// });
-
 builder.Services.AddSingleton<IConnectionMultiplexer>(options =>
 {
     var config = builder.Configuration.GetConnectionString("RedisCacheUrl");
-    if (!string.IsNullOrEmpty(config))
+    if (string.IsNullOrEmpty(config))
         throw new Exception("Connection not found");
     
     return ConnectionMultiplexer.Connect(config!);
