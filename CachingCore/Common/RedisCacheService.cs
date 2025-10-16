@@ -26,8 +26,8 @@ public class RedisCacheService
         return JsonSerializer.Deserialize<T>(value!);
     }
 
-    public async Task RemoveAsync()
+    public async Task RemoveAsync(String key)
     {
-        
+        await db.KeyDeleteAsync(key);
     }
 }
