@@ -48,4 +48,5 @@ app.UseFastEndpoints();
 app.UseHttpsRedirection();
 app.MapOpenApi();
 app.MapScalarApiReference();
+app.UseSerilogRequestLogging();
 app.Run();
