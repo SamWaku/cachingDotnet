@@ -18,10 +18,10 @@ public class GetSeedDataEndpointInMemory(PostgresDatabase database, IMemoryCache
 {
     public override void Configure()
     {
-        Get("seeded-data");
+        Get("seeded-data/in-memory");
         Summary(s =>
         {
-            s.Summary = "Get data, no caching";
+            s.Summary = "Get data, in-memory caching";
         });
         AllowAnonymous();
     }

@@ -42,7 +42,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(options =>
     return ConnectionMultiplexer.Connect(config!);
 });
 
-
+builder.Services.AddScoped<RedisCacheService>();
 
 var app = builder.Build();
 app.UseCors("DefaultPolicy");
