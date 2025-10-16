@@ -2,6 +2,7 @@ using CachingCore.Common;
 using FastEndpoints;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Scalar.AspNetCore;
+using Serilog;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +34,10 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(options =>
 });
 
 builder.Services.AddScoped<RedisCacheService>();
+builder.Host.UseSerilog((context, configuration) =>
+{
+    configuration.ReadFrom.Configuration(context.Configuration);
+});
 
 var app = builder.Build();
 app.UseCors("DefaultPolicy");
