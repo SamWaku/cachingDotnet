@@ -1,7 +1,6 @@
 ﻿using CachingCore.Common;
 using CachingCore.Database;
 using FastEndpoints;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace CachingCore.Modules.CacheTest;
