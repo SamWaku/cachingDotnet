@@ -2,11 +2,11 @@
 
 namespace CachingCore.Common;
 
-public class RedisCacheService()
+public class RedisCacheService
 {
     private readonly IDatabase db;
 
-    public  RedisCacheService(this RedisCacheService, IConnectionMultiplexer redis)
+    public  RedisCacheService(IConnectionMultiplexer redis)
     {
         db = redis.GetDatabase();
     }
