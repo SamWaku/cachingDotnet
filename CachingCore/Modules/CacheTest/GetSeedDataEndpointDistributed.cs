@@ -33,13 +33,13 @@ public class GetSeedDataEndpointDistributed(RedisCacheService redis, PostgresDat
             };
         }
 
-        var dbData = database.Caches
+        var dbData = await database.Caches
             .AsNoTracking()
-            .ToList();
+            .ToListAsync(ct);
 
         if (dbData.Any())
         {
-            await redis.SetAsync(key, cachedData!, TimeSpan.FromMinutes(5));
+            await redis.SetAsync(key, dbData, TimeSpan.FromMinutes(5));
         }
         
         return new DefaultResponse<Cache>
