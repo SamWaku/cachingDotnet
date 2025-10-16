@@ -4,9 +4,11 @@ using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Scalar.AspNetCore;
 using Serilog;
 using StackExchange.Redis;
+using ILogger = Serilog.ILogger;
 
 var builder = WebApplication.CreateBuilder(args);
 
+Log.Information("Application starting");
 builder.Services.AddOpenApi();
 builder.Services.AddFastEndpoints();
 builder.Services.AddAuthorization();
@@ -49,4 +51,11 @@ app.UseHttpsRedirection();
 app.MapOpenApi();
 app.MapScalarApiReference();
 app.UseSerilogRequestLogging();
+
+//example api logging data
+// app.MapGet("/serilog-example", (ILogger logger) =>
+// {
+//     logger.Information("Hello World!");
+//     return Results.Ok();
+// });
 app.Run();
